@@ -732,7 +732,8 @@ sub check_syncds_state {
 	($log_level >> $DEBUG) && print "DEBUG Checking syncds state.\n";
 	if ($script_mode == $SYNCDS || $script_mode == $BADASS || $script_mode == $REPORT) {
 		## The herd is about to get /update/<hostname>
-		&sleep_rand(5);
+		##changed sleep to get_cookie
+		##&sleep_rand(5);
 
 		my $url = "$traffic_ops_host\/update/$hostname_short";
 		my $upd_ref = &curl_me($url);
@@ -1294,6 +1295,7 @@ sub get_cookie {
     my $tm_login = shift;
     my ( $u, $p ) = split( /:/, $tm_login );
 
+    &sleep_rand(60);
     my $cmd = "curl -vLks -X POST -d 'u=" . $u . "' -d 'p=" . $p . "' " . $tm_host . "/login -o /dev/null 2>&1 | grep Set-Cookie | awk '{print \$3}'";
 	($log_level >> $DEBUG) && print "DEBUG Getting cookie with $cmd.\n";
     my $cookie = `$cmd`;
